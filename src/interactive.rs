@@ -4,8 +4,6 @@ use std::io::{self, BufRead};
 use std::path::PathBuf;
 use std::process::{exit, Command};
 
-// TODO: implement parallelism in shell
-
 struct Program<'a> {
     command: &'a str,
     args: Vec<String>,

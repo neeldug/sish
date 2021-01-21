@@ -18,6 +18,6 @@
 
 ### Extra features:
 
-- [ ] Parallelism using &
+- [X] Parallelism using & _Used ThreadPool over *nix SysCall fork()_
 
 - [ ] Batch execution of shell scripts
