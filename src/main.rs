@@ -1,5 +1,6 @@
 mod batch;
 mod interactive;
+mod parallel;
 
 use crate::batch::batch_execute;
 use crate::interactive::interactive_loop;

@@ -1,3 +1,4 @@
+use crate::parallel::parallel_dispatch;
 use std::env;
 use std::io::{self, BufRead};
 use std::path::PathBuf;
@@ -64,15 +65,28 @@ pub(crate) fn interactive_loop(mut path: Vec<PathBuf>) {
         let stdin = io::stdin();
         eprint!("sish> ");
         let line = stdin.lock().lines().next().unwrap().unwrap();
-        let split = line.split_whitespace().skip(1).map(|e| e.to_string());
-        let args = split.collect::<Vec<String>>();
-        let command = line.split_whitespace().collect::<Vec<&str>>()[0];
-        // Build my struct:
-        let exec = Program::new(command, args);
-        match dispatch_command(exec, &mut path) {
-            Ok(_) => {}
-            Err(e) => {
-                eprintln!("{}", e)
+        if line.contains('&') {
+            let split = line.split('&').map(|e| e.to_string());
+            let mut parallel_cmds = Vec::new();
+            for commands in split {
+                let cmd = commands
+                    .split_whitespace()
+                    .map(|e| e.to_string())
+                    .collect::<Vec<String>>();
+                parallel_cmds.push(cmd);
+            }
+            parallel_dispatch(parallel_cmds);
+        } else {
+            let split = line.split_whitespace().skip(1).map(|e| e.to_string());
+            let args = split.collect::<Vec<String>>();
+            let command = line.split_whitespace().collect::<Vec<&str>>()[0];
+            // Build my struct:
+            let exec = Program::new(command, args);
+            match dispatch_command(exec, &mut path) {
+                Ok(_) => {}
+                Err(e) => {
+                    eprintln!("{}", e)
+                }
             }
         }
     }
