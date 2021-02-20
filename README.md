@@ -20,4 +20,4 @@
 
 - [X] Parallelism using & _Used ThreadPool over *nix SysCall fork()_
 
-- [ ] Batch execution of shell scripts
+- [ ] Batch execution of shell scripts TO:DO
